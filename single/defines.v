@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+`define ALU_FUNCT_LEN 2
+
 `define ALU_ADD     2'b00
 `define ALU_NAND    2'b01
 `define ALU_PASSA   2'b10
