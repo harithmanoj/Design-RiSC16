@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 `include "defines.v"
 
 /**
-    @param  WORD_LENGTH                         : World Length.
+    @param  WORD_LENGTH                         : World Length (16).
 
     @port   srcA            in  [WORD_LENGTH]   : input Source.
     @port   srcB            in  [WORD_LENGTH]   : input Source.
