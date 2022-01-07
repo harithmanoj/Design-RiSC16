@@ -20,6 +20,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `include "defines.v"
 
+/**
+    @param  WORD_LENGTH                         : World Length (16).
+    @param  MEM_SIZE                            : Memory Size (65536).
+
+    @port   dataOut         out [WORD_LENGTH]   : data at address.
+    @port   dataIn          in  [WORD_LENGTH]   : input data.
+    @port   address         in  [WORD_LENGTH]   : address to use.
+    @port   clk             in                  : clock.
+    @port   writeEn         in                  : Write dataIn to memory.
+    @port   rst             in                  : Reset Memory to 0.
+*/
 module RiSC16_memory #(
     WORD_LENGTH = 16,
     MEM_SIZE = 65536
