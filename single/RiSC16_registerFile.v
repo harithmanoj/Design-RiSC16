@@ -67,7 +67,7 @@ module RiSC16_registerFile #(
         if(wen) begin
             if(addrT != 3'b000):
                 dataRegister[addrT] <= trgt;
-        else if(rst)
+        end else if(rst)
             for ( i = 0; i < REG_NUM; i = i + 1) begin
                 dataRegister[i] <= 0
             end
