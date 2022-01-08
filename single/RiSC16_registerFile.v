@@ -35,7 +35,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @port   clk             in                  : clock.
     @port   rst             in                  : reset.
 */
-module registerFile #(
+module RiSC16_registerFile #(
     WORD_LENGTH = 16,
     REG_ADDR_LEN = 3,
     REG_NUM = 8
