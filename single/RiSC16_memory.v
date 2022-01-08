@@ -45,9 +45,9 @@ module RiSC16_memory #(
     input clk;
     input rst;
 
-    reg [7 : 0] memoryArray [0 : MEM_SIZE - 1]
+    reg [WORD_LENGTH - 1 : 0] memoryArray [0 : MEM_SIZE - 1]
 
-    assign dataOut =  { memoryArray[address], memoryArray[address + 1]};
+    assign dataOut =  memoryArray[address];
 
     integer i;
 
@@ -57,7 +57,7 @@ module RiSC16_memory #(
                 memoryArray[i] <= 0;
             end
         else if(writeEn)
-            { memoryArray[address], memoryArray[address + 1]} <= dataIn;
+            memoryArray[address] <= dataIn;
     end
 
 endmodule
