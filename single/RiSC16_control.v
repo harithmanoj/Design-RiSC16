@@ -38,8 +38,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @port   muxAddr2        out                 : 0 to pass rC
                                                   1 to pass rA
     @port   muxPc           out [2]             : 00 to pass PC + 2
-                                                  01 to pass PC + 2 + Sign Extended Value
-                                                  10 to pass ALU out
+                                                  10 to pass PC + 2 + Sign Extended Value
+                                                  11 to pass PC + 2 + ALU out
 
 */
 module RiSC16_control #(
@@ -140,7 +140,7 @@ module RiSC16_control #(
                 reg_wen     <= 0;
                 muxTrgt     <= 2'b00;
                 muxAddr2    <= 1;
-                muxPc       <= 2'b01;
+                muxPc       <= 2'b10;
             end
             
             `OP_JALR:     begin
@@ -151,7 +151,7 @@ module RiSC16_control #(
                 reg_wen     <= 1;
                 muxTrgt     <= 2'b10;
                 muxAddr2    <= 0;
-                muxPc       <= 2'b10;
+                muxPc       <= 2'b11;
             end
             default:        begin
                 aluFunct    <= `ALU_ADD;
