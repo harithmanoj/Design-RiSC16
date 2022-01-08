@@ -57,7 +57,7 @@ module RiSC16_memory #(
                 memoryArray[i] <= 0;
             end
         else if(writeEn)
-            {memoryArray[address_trunc], memoryArray[address_trunc+1]} <= dataIn;
+            { memoryArray[address], memoryArray[address + 1]} <= dataIn;
     end
 
 endmodule

@@ -25,10 +25,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @param  REG_ADDR_LEN                        : Register addressing length (3).
     @param  REG_NUM                             : Number of registers.
 
-    @port   srcA            out [WORD_LENGTH]   : A source register out.
-    @port   srcB            out [WORD_LENGTH]   : B source register out.
+    @port   src1            out [WORD_LENGTH]   : A source register out.
+    @port   src2            out [WORD_LENGTH]   : B source register out.
     @port   adrrA           out [REG_ADDR_LEN]  : A register address.
-    @port   addrB           out [REG_ADDR_LEN]  : B register address.
+    @port   addr2           out [REG_ADDR_LEN]  : B register address.
     @port   trgt            in  [WORD_LENGTH]   : Write data.
     @port   addrT           in  [REG_ADDR_LEN]  : Write Address.
     @port   wen             in                  : Write Enable.
@@ -40,12 +40,12 @@ module RiSC16_registerFile #(
     REG_ADDR_LEN = 3,
     REG_NUM = 8
 ) (
-    addrA, srcA, addrB, srcB, addrT, trgt,
+    addr1, src1, addr2, src2, addrT, trgt,
     wen, clk, rst
 );
 
-    input [REG_ADDR_LEN - 1 : 0] addrA;
-    input [REG_ADDR_LEN - 1 : 0] addrB;
+    input [REG_ADDR_LEN - 1 : 0] addr1;
+    input [REG_ADDR_LEN - 1 : 0] addr2;
     input [REG_ADDR_LEN - 1 : 0] addrT;
     input [WORD_LENGTH - 1 : 0] trgt;
 
@@ -53,13 +53,13 @@ module RiSC16_registerFile #(
     input clk;
     input rst;
 
-    output [WORD_LENGTH - 1 : 0] srcA;
-    output [WORD_LENGTH - 1 : 0] srcB;
+    output [WORD_LENGTH - 1 : 0] src1;
+    output [WORD_LENGTH - 1 : 0] src2;
 
     reg [WORD_LENGTH - 1 : 0] dataRegister [0 : REG_NUM - 1]
 
-    assign srcA = dataRegister[addrA];
-    assign srcB = dataRegister[addrB];
+    assign src1 = dataRegister[addr1];
+    assign src2 = dataRegister[addr2];
 
     integer i;
 

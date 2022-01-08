@@ -23,37 +23,37 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 /**
     @param  WORD_LENGTH                         : World Length (16).
 
-    @port   srcA            in  [WORD_LENGTH]   : input Source.
-    @port   srcB            in  [WORD_LENGTH]   : input Source.
+    @port   src1            in  [WORD_LENGTH]   : input Source.
+    @port   src2            in  [WORD_LENGTH]   : input Source.
     @port   result          out [WORD_LENGTH]   : output Result.
     @port   state           out                 : true if zero out.
     @port   funct           in  [ALU_FUNCT_LEN] : Alu opcode.
                                 ALU_ADD         : add operation.
                                 ALU_NAND        : nand operation.
-                                ALU_PASSA       : pass srcA to result.
+                                ALU_PASSA       : pass src1 to result.
                                 ALU_SUB         : subtraction result.
 */
 module RiSC16_alu #(
     WORD_LENGTH = 16
 ) (
-    srcA, srcB, result, state, funct
+    src1, src2, result, state, funct
 );
 
     output reg [WORD_LENGTH - 1 : 0] result;
     output reg state;
 
-    input [WORD_LENGTH - 1 : 0] srcA;
-    input [WORD_LENGTH - 1 : 0] srcB;
-    input [`ALU_FUNCT_LEN - 1 : 0] srcA;
+    input [WORD_LENGTH - 1 : 0] src1;
+    input [WORD_LENGTH - 1 : 0] src2;
+    input [`ALU_FUNCT_LEN - 1 : 0] src1;
 
     always @(*) begin
         
         case(funct):
 
-            `ALU_ADD:   result <= srcA + srcB
-            `ALU_NAND:  result <= ~(srcA & srcB)
-            `ALU_PASSA: result <= srcA
-            `ALU_SUB:   result <= srcA - srcB
+            `ALU_ADD:   result <= src1 + src2
+            `ALU_NAND:  result <= ~(src1 & src2)
+            `ALU_PASSA: result <= src1
+            `ALU_SUB:   result <= src1 - src2
             default:    resut <= WORD_LENGTH'b0
 
         endcase
