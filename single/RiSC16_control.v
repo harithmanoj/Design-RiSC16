@@ -34,12 +34,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @port   reg_wen         out                 : Write Register File Enable.
     @port   muxTrgt         out [2]             : 00 to pass data memory out,
                                                   01 to pass ALU out,
-                                                  10 to pass PC + 2
+                                                  10 to pass PC + 1
     @port   muxAddr2        out                 : 0 to pass rC
                                                   1 to pass rA
-    @port   muxPc           out [2]             : 00 to pass PC + 2
-                                                  10 to pass PC + 2 + Sign Extended Value
-                                                  11 to pass PC + 2 + ALU out
+    @port   muxPc           out [2]             : 00 to pass PC + 1
+                                                  10 to pass PC + 1 + Sign Extended Value
+                                                  11 to pass PC + 1 + ALU out
 
 */
 module RiSC16_control #(
