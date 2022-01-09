@@ -19,22 +19,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 `timescale 1us/1ns
 
+`include "defines.v"
 `include "RiSC16_alu.v"
+
 
 module alu_tb;
 
 
-reg [15:0] src1;
-reg [15:0] src2;
-reg [`ALU_FUNCT_LEN - 1:0] funct;
+    reg [15:0] src1;
+    reg [15:0] src2;
+    reg [`ALU_FUNCT_LEN - 1:0] funct;
 
-wire [15:0] result;
-wire state;
+    wire [15:0] result;
+    wire state;
 
 
-RiSC16_alu #(
-    
-    .WORD_LENGTH(16)
+    RiSC16_alu #(      
+        .WORD_LENGTH(16)
     ) alu (
         .src1(src1), 
         .src2(src2), 
@@ -47,15 +48,19 @@ RiSC16_alu #(
         
         $monitor("%g : src1 %h O src2 %h (%h funct) => ( %h state, %h result)", 
             $time, src1, src2, funct, state, result );
-        $dumpfile("out/alu_tb.vcd");
-        $dumpvars(0, alu_tb)
+        $dumpfile("alu_tb.vcd");
+        $dumpvars(0, alu_tb);
 
-        #10     src1 = 16'd102;
-                src2 = 16'd205;
-                funct = `ALU_ADD;
+        #10     src1    <= 16'h1111;
+                src2    <= 16'heaaa;
+                funct   <= `ALU_ADD;
+
+        #20     src1    <= 16'h2222;
+                src2    <= 16'h2222;
+                funct   <= `ALU_SUB;
 
 
-        #20     $finish;
+        #30     $finish;
 
     end
 
