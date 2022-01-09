@@ -34,7 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
                                 ALU_SUB         : subtraction result.
 */
 module RiSC16_alu #(
-    WORD_LENGTH = 16
+    parameter WORD_LENGTH = 16
 ) (
     src1, src2, result, state, funct
 );
@@ -44,21 +44,21 @@ module RiSC16_alu #(
 
     input [WORD_LENGTH - 1 : 0] src1;
     input [WORD_LENGTH - 1 : 0] src2;
-    input [`ALU_FUNCT_LEN - 1 : 0] src1;
+    input [`ALU_FUNCT_LEN - 1 : 0] funct;
 
     always @(*) begin
         
-        case(funct):
+        case(funct)
 
-            `ALU_ADD:   result <= src1 + src2
-            `ALU_NAND:  result <= ~(src1 & src2)
-            `ALU_PASSA: result <= src1
-            `ALU_SUB:   result <= src1 - src2
-            default:    resut <= WORD_LENGTH'b0
+            `ALU_ADD:   result <= src1 + src2;
+            `ALU_NAND:  result <= ~(src1 & src2);
+            `ALU_PASSA: result <= src1;
+            `ALU_SUB:   result <= src1 - src2;
+            default:    result <= 0;
 
         endcase
 
-        state <= &(~result)
+        state <= &(~result);
 
     end
     
