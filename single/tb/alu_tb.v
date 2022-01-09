@@ -55,12 +55,12 @@ module alu_tb;
                 src2    <= 16'heaaa;
                 funct   <= `ALU_ADD;
 
-        #20     src1    <= 16'h2222;
+        #10     src1    <= 16'h2222;
                 src2    <= 16'h2222;
                 funct   <= `ALU_SUB;
 
 
-        #30     $finish;
+        #10     $finish;
 
     end
 

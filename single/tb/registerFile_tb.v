@@ -59,28 +59,28 @@ module registerFile_tb;
 
         #10     rst     <= 1;
 
-        #20     rst     <= 0;
+        #10     rst     <= 0;
 
-        #30     addrT   <= 3'b001;
+        #10     addrT   <= 3'b001;
                 trgt    <= 16'h1234;
                 wen     <= 1;
 
-        #40     wen     <= 0;
+        #10     wen     <= 0;
         
-        #50     addr1   <= 3'b001;
+        #10     addr1   <= 3'b001;
         
-        #60     rst     <= 1;
+        #10     rst     <= 1;
 
-        #70     rst     <= 0;
+        #10     rst     <= 0;
 
-        #80     addrT   <= 3'b000;
+        #10     addrT   <= 3'b000;
                 trgt    <= 16'h2356;
                 wen     <= 1;
                 addr1   <= 3'b000;
             
-        #90     wen     <= 0;
+        #10     wen     <= 0;
 
-        #100     $finish;
+        #10     $finish;
     end
 
     always #7 clk <= ~clk;

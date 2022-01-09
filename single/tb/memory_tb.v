@@ -57,12 +57,12 @@ module memory_tb;
                     writeEn     <= 1;
                     rst         <= 0;
         
-        #20         rst         <= 1;
+        #10         rst         <= 1;
                     writeEn     <= 0;
 
-        #30         $finish;
+        #10         $finish;
     end
 
-    always #5 clk <= ~clk;
+    always #7 clk <= ~clk;
 
 endmodule
