@@ -27,8 +27,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     @port   src1            out [WORD_LENGTH]   : A source register out.
     @port   src2            out [WORD_LENGTH]   : B source register out.
-    @port   adrrA           out [REG_ADDR_LEN]  : A register address.
-    @port   addr2           out [REG_ADDR_LEN]  : B register address.
+    @port   adrrA           in  [REG_ADDR_LEN]  : A register address.
+    @port   addr2           in  [REG_ADDR_LEN]  : B register address.
     @port   trgt            in  [WORD_LENGTH]   : Write data.
     @port   addrT           in  [REG_ADDR_LEN]  : Write Address.
     @port   wen             in                  : Write Enable.
@@ -36,9 +36,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @port   rst             in                  : reset.
 */
 module RiSC16_registerFile #(
-    WORD_LENGTH = 16,
-    REG_ADDR_LEN = 3,
-    REG_NUM = 8
+    parameter WORD_LENGTH = 16,
+    parameter REG_ADDR_LEN = 3,
+    parameter REG_NUM = 8
 ) (
     addr1, src1, addr2, src2, addrT, trgt,
     wen, clk, rst
@@ -56,7 +56,7 @@ module RiSC16_registerFile #(
     output [WORD_LENGTH - 1 : 0] src1;
     output [WORD_LENGTH - 1 : 0] src2;
 
-    reg [WORD_LENGTH - 1 : 0] dataRegister [0 : REG_NUM - 1]
+    reg [WORD_LENGTH - 1 : 0] dataRegister [0 : REG_NUM - 1];
 
     assign src1 = dataRegister[addr1];
     assign src2 = dataRegister[addr2];
@@ -65,11 +65,11 @@ module RiSC16_registerFile #(
 
     always @(negedge clk) begin
         if(wen) begin
-            if(addrT != 3'b000):
+            if(addrT != 3'b000)
                 dataRegister[addrT] <= trgt;
         end else if(rst)
             for ( i = 0; i < REG_NUM; i = i + 1) begin
-                dataRegister[i] <= 0
+                dataRegister[i] <= 0;
             end
     end
 
