@@ -32,8 +32,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @port   rst             in                  : Reset Memory to 0.
 */
 module RiSC16_memory #(
-    WORD_LENGTH = 16,
-    MEM_SIZE = 65536
+    parameter WORD_LENGTH = 16,
+    parameter MEM_SIZE = 65536
 ) (
     dataOut, address, dataIn, clk, writeEn, rst
 );
@@ -45,7 +45,7 @@ module RiSC16_memory #(
     input clk;
     input rst;
 
-    reg [WORD_LENGTH - 1 : 0] memoryArray [0 : MEM_SIZE - 1]
+    reg [WORD_LENGTH - 1 : 0] memoryArray [0 : MEM_SIZE - 1];
 
     assign dataOut =  memoryArray[address];
 
