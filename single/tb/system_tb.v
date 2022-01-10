@@ -32,7 +32,9 @@ module system_tb;
 
 
     RiSC16_system #(
-        .WORD_LENGTH(16)
+        .WORD_LENGTH(16),
+        .PROGRAM_SIZE(20),
+        .DATA_SIZE(20)
     ) system (
         .clk(clk), 
         .addr(addr),

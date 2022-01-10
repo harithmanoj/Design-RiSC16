@@ -62,7 +62,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 module RiSC16_system #(
-    parameter WORD_LENGTH = 16
+    parameter WORD_LENGTH = 16,
+    parameter PROGRAM_SIZE = 65536,
+    parameter DATA_SIZE = 65536
 ) (
     clk, addr, pen, instr, rst
 );
@@ -130,7 +132,7 @@ module RiSC16_system #(
 
     RiSC16_memory #(
         .WORD_LENGTH(16),
-        .MEM_SIZE(65536) 
+        .MEM_SIZE(DATA_SIZE) 
     ) data_mem (
         .dataOut(d_out), 
         .address(alu_out), 
@@ -168,7 +170,7 @@ module RiSC16_system #(
 
     RiSC16_memory #(
         .WORD_LENGTH(16),
-        .MEM_SIZE(65536) 
+        .MEM_SIZE(PROGRAM_SIZE) 
     ) instr_mem (
         .dataOut(IR_in), 
         .address(i_addr), 
