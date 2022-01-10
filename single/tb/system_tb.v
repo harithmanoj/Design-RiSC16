@@ -41,18 +41,25 @@ module system_tb;
 
 
     initial begin
+        
+
+        $monitor("%g: pc %h, IR %h", $time, system.PC, system.IR);
         $dumpfile("system_tb.vcd");
         $dumpvars(0, system_tb);
+        $dumpvars(0, system_tb.system.rf.dataRegister[2]);
 
         $display("System Purge");
 
         $display("System Programming");
-        $display("b0110101100000000 lui 2, 0x300");
-        #6      instr   <= 16'b0110101100000000;
+        $display("b0110101000000000 lui 2, 0x200");
+        #6      instr   <= 16'b0110101000000000;
                 rst     <= 0;
 
         $display("b0110110100000000 lui 3, 0x100");
         #4     instr   <= 16'b0110110100000000;
+
+        $display("b0000100100000011 add 2, 2, 3");
+        #4     instr   <= 16'b0000100100000011;
         
         $display("Finish Programming to Reset");
         #4     pen     <= 0;
@@ -60,9 +67,7 @@ module system_tb;
 
         #4     rst     <= 0;
 
-        #8     $finish;
-
-        $monitor("%g: pc %h, IR %h", $time, system.PC, system.IR);
+        #16     $finish;
 
     end
 

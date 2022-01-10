@@ -71,7 +71,9 @@ module RiSC16_system #(
     input rst;
 
     reg [WORD_LENGTH - 1 : 0] PC = 0;
-    wire [WORD_LENGTH - 1 : 0] IR = 0;
+    reg [WORD_LENGTH - 1 : 0] PC_in = 0;
+    reg [WORD_LENGTH - 1 : 0] IR = 0;
+    wire [WORD_LENGTH - 1 : 0] IR_in;
     
     reg i_rst = 0;
 
@@ -167,7 +169,7 @@ module RiSC16_system #(
         .WORD_LENGTH(16),
         .MEM_SIZE(65536) 
     ) instr_mem (
-        .dataOut(IR), 
+        .dataOut(IR_in), 
         .address(PC), 
         .dataIn(instr), 
         .clk(clk), 
@@ -175,20 +177,17 @@ module RiSC16_system #(
         .rst(i_rst) 
     );
 
-    always @(negedge clk) begin
-        
+    always @(*) begin
+        i_rst = rst & pen;
         pc_inc = PC + 1;
 
         if(rst & pen) begin
-            i_rst = 1;
-            PC <= 0;
+            PC_in = 0;
         end else if(pen & ~rst) begin
-            i_rst = 0;
-            PC <= pc_inc;
+            PC_in = pc_inc;
         end else if(~pen & rst) begin
-            PC <= 0;
+            PC_in = 0;
         end else if(~pen & ~rst) begin
-            i_rst = 0;
             if(muxAddr2)
                 rf_addr2 = IR[12:10];
             else
@@ -215,27 +214,31 @@ module RiSC16_system #(
                 
                 2'b00: begin
                     addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC <= pc_inc;
+                    PC_in = pc_inc;
                 end
 
                 2'b10: begin
                     addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC <= pc_inc + addIn;
+                    PC_in = pc_inc + addIn;
                 end
 
                 2'b11: begin
                     addIn = alu_out;
-                    PC <= pc_inc + addIn;
+                    PC_in = pc_inc + addIn;
                 end
 
                 default: begin
                     addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC <= pc_inc;
+                    PC_in = pc_inc;
                 end
             endcase
 
         end
+    end
 
+    always @(negedge clk) begin
+        IR <= IR_in;     
+        PC <= PC_in;
         
     end
         

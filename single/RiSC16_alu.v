@@ -50,15 +50,15 @@ module RiSC16_alu #(
         
         case(funct)
 
-            `ALU_ADD:   result <= src1 + src2;
-            `ALU_NAND:  result <= ~(src1 & src2);
-            `ALU_PASSA: result <= src1;
-            `ALU_SUB:   result <= src1 - src2;
-            default:    result <= 0;
+            `ALU_ADD:   result = src1 + src2;
+            `ALU_NAND:  result = ~(src1 & src2);
+            `ALU_PASSA: result = src1;
+            `ALU_SUB:   result = src1 - src2;
+            default:    result = 0;
 
         endcase
 
-        state <= &(~result);
+        state = &(~result);
 
     end
     

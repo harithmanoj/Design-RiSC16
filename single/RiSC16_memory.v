@@ -39,7 +39,7 @@ module RiSC16_memory #(
 );
 
     input [WORD_LENGTH - 1 : 0] address;
-    output [WORD_LENGTH - 1 : 0] dataOut;
+    output reg [WORD_LENGTH - 1 : 0] dataOut;
     input writeEn;
     input [WORD_LENGTH - 1 : 0] dataIn;
     input clk;
@@ -47,9 +47,11 @@ module RiSC16_memory #(
 
     reg [WORD_LENGTH - 1 : 0] memoryArray [0 : MEM_SIZE - 1];
 
-    assign dataOut =  memoryArray[address];
-
     integer i;
+    
+    always @(*) begin
+        dataOut = memoryArray[address];
+    end
 
     always @(negedge clk) begin
         if(rst)
