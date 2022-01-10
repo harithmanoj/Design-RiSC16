@@ -66,105 +66,105 @@ module RiSC16_control #(
     always @(*) begin
         
         if(pen) begin
-            aluFunct    = `ALU_ADD;
-            muxSrc1     =  0;
-            muxSrc2     =  0;
-            d_wen       =  0;
-            reg_wen     =  0;
-            muxTrgt     =  2'b00;
-            muxAddr2    =  0;
-            muxPc       =  2'b00;
+            aluFunct    <= `ALU_ADD;
+            muxSrc1     <=  0;
+            muxSrc2     <=  0;
+            d_wen       <=  0;
+            reg_wen     <=  0;
+            muxTrgt     <=  2'b00;
+            muxAddr2    <=  0;
+            muxPc       <=  2'b00;
         end else begin
             case (op)
                 `OP_ADD:    begin
-                    aluFunct    = `ALU_ADD;
-                    muxSrc1     = 0;
-                    muxSrc2     = 0;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b01;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_ADD;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 0;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b01;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_ADDI:   begin
-                    aluFunct    = `ALU_ADD;
-                    muxSrc1     = 0;
-                    muxSrc2     = 1;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b01;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_ADD;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 1;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b01;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_NAND:   begin
-                    aluFunct    = `ALU_NAND;
-                    muxSrc1     = 0;
-                    muxSrc2     = 0;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b01;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_NAND;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 0;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b01;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_LUI:    begin
-                    aluFunct    = `ALU_PASSA;
-                    muxSrc1     = 1;
-                    muxSrc2     = 0;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b01;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_PASSA;
+                    muxSrc1     <= 1;
+                    muxSrc2     <= 0;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b01;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_SW:     begin
-                    aluFunct    = `ALU_ADD;
-                    muxSrc1     = 0;
-                    muxSrc2     = 1;
-                    d_wen       = 1;
-                    reg_wen     = 0;
-                    muxTrgt     = 2'b00;
-                    muxAddr2    = 1;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_ADD;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 1;
+                    d_wen       <= 1;
+                    reg_wen     <= 0;
+                    muxTrgt     <= 2'b00;
+                    muxAddr2    <= 1;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_LW:     begin
-                    aluFunct    = `ALU_ADD;
-                    muxSrc1     = 0;
-                    muxSrc2     = 1;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b00;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b00;
+                    aluFunct    <= `ALU_ADD;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 1;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b00;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b00;
                 end
 
                 `OP_BEQ:     begin
-                    aluFunct    = `ALU_SUB;
-                    muxSrc1     = 0;
-                    muxSrc2     = 0;
-                    d_wen       = 0;
-                    reg_wen     = 0;
-                    muxTrgt     = 2'b00;
-                    muxAddr2    = 1;
+                    aluFunct    <= `ALU_SUB;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 0;
+                    d_wen       <= 0;
+                    reg_wen     <= 0;
+                    muxTrgt     <= 2'b00;
+                    muxAddr2    <= 1;
                     if(state)
-                        muxPc   = 2'b10;
+                        muxPc   <= 2'b10;
                     else
-                        muxPc   = 2'b00;
+                        muxPc   <= 2'b00;
                 end
                 
                 `OP_JALR:     begin
-                    aluFunct    = `ALU_PASSA;
-                    muxSrc1     = 0;
-                    muxSrc2     = 0;
-                    d_wen       = 0;
-                    reg_wen     = 1;
-                    muxTrgt     = 2'b10;
-                    muxAddr2    = 0;
-                    muxPc       = 2'b11;
+                    aluFunct    <= `ALU_PASSA;
+                    muxSrc1     <= 0;
+                    muxSrc2     <= 0;
+                    d_wen       <= 0;
+                    reg_wen     <= 1;
+                    muxTrgt     <= 2'b10;
+                    muxAddr2    <= 0;
+                    muxPc       <= 2'b11;
                 end
 
             endcase

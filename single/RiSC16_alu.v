@@ -39,8 +39,8 @@ module RiSC16_alu #(
     src1, src2, result, state, funct
 );
 
-    output reg [WORD_LENGTH - 1 : 0] result;
-    output reg state;
+    output reg [WORD_LENGTH - 1 : 0] result = 0;
+    output reg state = 0;
 
     input [WORD_LENGTH - 1 : 0] src1;
     input [WORD_LENGTH - 1 : 0] src2;
@@ -50,11 +50,11 @@ module RiSC16_alu #(
         
         case(funct)
 
-            `ALU_ADD:   result = src1 + src2;
-            `ALU_NAND:  result = ~(src1 & src2);
-            `ALU_PASSA: result = src1;
-            `ALU_SUB:   result = src1 - src2;
-            default:    result = 0;
+            `ALU_ADD:   result <= src1 + src2;
+            `ALU_NAND:  result <= ~(src1 & src2);
+            `ALU_PASSA: result <= src1;
+            `ALU_SUB:   result <= src1 - src2;
+            default:    result <= 0;
 
         endcase
 

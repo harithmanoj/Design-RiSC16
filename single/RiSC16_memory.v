@@ -50,7 +50,7 @@ module RiSC16_memory #(
     integer i;
     
     always @(*) begin
-        dataOut = memoryArray[address];
+        dataOut <= memoryArray[address];
     end
 
     always @(negedge clk) begin

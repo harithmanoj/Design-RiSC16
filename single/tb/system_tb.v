@@ -28,12 +28,14 @@ module system_tb;
     reg pen = 1;
     reg rst = 1;
     reg [15:0] instr = 16'h0000;
+    reg [15:0] addr = 16'h0000;
 
 
     RiSC16_system #(
         .WORD_LENGTH(16)
     ) system (
         .clk(clk), 
+        .addr(addr),
         .pen(pen), 
         .instr(instr), 
         .rst(rst)
@@ -53,13 +55,16 @@ module system_tb;
         $display("System Programming");
         $display("b0110101000000000 lui 2, 0x200");
         #6      instr   <= 16'b0110101000000000;
+                addr    <= 16'h0000;
                 rst     <= 0;
 
         $display("b0110110100000000 lui 3, 0x100");
         #4     instr   <= 16'b0110110100000000;
+                addr    <= 16'h0001;
 
         $display("b0000100100000011 add 2, 2, 3");
         #4     instr   <= 16'b0000100100000011;
+               addr    <= 16'h0002;
         
         $display("Finish Programming to Reset");
         #4     pen     <= 0;

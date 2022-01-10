@@ -29,6 +29,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     @param  WORD_LENGTH                         : Word Length (16).
 
     @port   instr           in  [WORD_LENGTH]   : Instruction to write to memory.
+    @port   addr            in  [WORD_LENGTH]   : Instruction Address.
     @port   clk             in                  : Clock.
     @port   rst             in                  : Reset System.
     @port   pen             in                  : Programming Enable.
@@ -63,10 +64,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 module RiSC16_system #(
     parameter WORD_LENGTH = 16
 ) (
-    clk, pen, instr, rst
+    clk, addr, pen, instr, rst
 );
     input pen;
     input [WORD_LENGTH - 1 : 0] instr;
+    input [WORD_LENGTH - 1 : 0] addr;
     input clk;
     input rst;
 
@@ -76,10 +78,11 @@ module RiSC16_system #(
     wire [WORD_LENGTH - 1 : 0] IR_in;
     
     reg i_rst = 0;
+    reg [WORD_LENGTH - 1 : 0] i_addr = 0;
 
-    reg [2:0] rf_addr2;
+    reg [2:0] rf_addr2 = 0;
     wire rf_wen;
-    reg [WORD_LENGTH - 1 : 0] rf_tgt;
+    reg [WORD_LENGTH - 1 : 0] rf_tgt = 0 ;
 
     wire [WORD_LENGTH - 1 : 0] rf_src1;
     wire [WORD_LENGTH - 1 : 0] rf_src2;
@@ -87,8 +90,8 @@ module RiSC16_system #(
     wire [WORD_LENGTH - 1 : 0] d_out;
     wire d_wen;
 
-    reg [WORD_LENGTH - 1 : 0] alu_1;
-    reg [WORD_LENGTH - 1 : 0] alu_2;
+    reg [WORD_LENGTH - 1 : 0] alu_1 = 0;
+    reg [WORD_LENGTH - 1 : 0] alu_2 = 0;
     wire alu_state;
     wire [`ALU_FUNCT_LEN - 1 : 0] alu_funct;
     wire [WORD_LENGTH - 1 : 0] alu_out;
@@ -99,9 +102,7 @@ module RiSC16_system #(
     wire muxAddr2;
     wire [1:0] muxPc;
 
-    reg [WORD_LENGTH - 1 : 0] pc_inc;
-
-    reg [WORD_LENGTH - 1 : 0] addIn;
+    reg [WORD_LENGTH - 1 : 0] pc_inc = 0;
 
     wire [2:0] op;
     wire [2:0] rf_addr1;
@@ -170,7 +171,7 @@ module RiSC16_system #(
         .MEM_SIZE(65536) 
     ) instr_mem (
         .dataOut(IR_in), 
-        .address(PC), 
+        .address(i_addr), 
         .dataIn(instr), 
         .clk(clk), 
         .writeEn(pen), 
@@ -182,56 +183,56 @@ module RiSC16_system #(
         pc_inc = PC + 1;
 
         if(rst & pen) begin
-            PC_in = 0;
+            PC_in <= 0;
+            i_addr <= addr;
         end else if(pen & ~rst) begin
-            PC_in = pc_inc;
+            PC_in <= pc_inc;
+            i_addr <= addr;
         end else if(~pen & rst) begin
-            PC_in = 0;
+            PC_in <= 0;
+            i_addr <= PC;
         end else if(~pen & ~rst) begin
             if(muxAddr2)
-                rf_addr2 = IR[12:10];
+                rf_addr2 <= IR[12:10];
             else
-                rf_addr2 = IR[2:0];
+                rf_addr2 <= IR[2:0];
             
             if(muxSrc1)
-                alu_1 = { IR[9:0], 6'b000000};
+                alu_1 <= { IR[9:0], 6'b000000};
             else
-                alu_1 = rf_src1;
+                alu_1 <= rf_src1;
 
             if(muxSrc2)
-                alu_2 = { {9{IR[6]}}, IR[6:0]};
+                alu_2 <= { {9{IR[6]}}, IR[6:0]};
             else
-                alu_2 = rf_src2;
+                alu_2 <= rf_src2;
 
             case (muxTrgt)
-                2'b00: rf_tgt = d_out;
-                2'b01: rf_tgt = alu_out;
-                2'b10: rf_tgt = pc_inc;
+                2'b00: rf_tgt <= d_out;
+                2'b01: rf_tgt <= alu_out;
+                2'b10: rf_tgt <= pc_inc;
                 default: rf_tgt = d_out;
             endcase
 
             case (muxPc)
                 
                 2'b00: begin
-                    addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC_in = pc_inc;
+                    PC_in <= pc_inc;
                 end
 
                 2'b10: begin
-                    addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC_in = pc_inc + addIn;
+                    PC_in <= pc_inc + { {9{IR[6]}}, IR[6:0]};
                 end
 
                 2'b11: begin
-                    addIn = alu_out;
-                    PC_in = pc_inc + addIn;
+                    PC_in <= pc_inc + alu_out;
                 end
 
                 default: begin
-                    addIn = { {9{IR[6]}}, IR[6:0]};
-                    PC_in = pc_inc;
+                    PC_in <= pc_inc;
                 end
             endcase
+            i_addr <= PC;
 
         end
     end
