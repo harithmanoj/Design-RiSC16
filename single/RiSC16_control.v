@@ -54,14 +54,14 @@ module RiSC16_control #(
     input state;
     input pen;
 
-    output reg [`ALU_FUNCT_LEN - 1 : 0] aluFunct;
-    output reg muxSrc1;
-    output reg muxSrc2;
-    output reg d_wen;
-    output reg reg_wen;
-    output reg [1:0] muxTrgt;
-    output reg muxAddr2;
-    output reg [1:0] muxPc;
+    output reg [`ALU_FUNCT_LEN - 1 : 0] aluFunct = `ALU_ADD;
+    output reg muxSrc1 = 0;
+    output reg muxSrc2 = 0;
+    output reg d_wen = 0;
+    output reg reg_wen = 0;
+    output reg [1:0] muxTrgt = 0;
+    output reg muxAddr2 = 0;
+    output reg [1:0] muxPc = 0;
 
     always @(*) begin
         
