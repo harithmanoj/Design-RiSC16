@@ -36,30 +36,6 @@ module control_tb;
     wire muxAddr2;
     wire [1:0] muxPc;
 
-    /**
-
-        @param  OP_LEN                              : OpCode Length (3).
-
-        @port   op              in  [OP_LEN]        : instruction opcode.
-        @port   state           in                  : True if result is zero.
-        @port   pen             in                  : Enable Program Memory Setup.
-        @port   aluFunct        out [ALU_FUNCT_LEN] : ALU opcode.
-        @port   muxSrc1         out                 : 0 to pass Register value,
-                                                    1 to pass Left Shifted Immediate Value.
-        @port   muxSrc2         out                 : 0 to pass Register value,
-                                                    1 to pass Sign Extended Value.
-        @port   d_wen           out                 : Write Data Memory Enable.
-        @port   reg_wen         out                 : Write Register File Enable.
-        @port   muxTrgt         out [2]             : 00 to pass data memory out,
-                                                    01 to pass ALU out,
-                                                    10 to pass PC + 1
-        @port   muxAddr2        out                 : 0 to pass rC
-                                                    1 to pass rA
-        @port   muxPc           out [2]             : 00 to pass PC + 1
-                                                    10 to pass PC + 1 + Sign Extended Value
-                                                    11 to pass PC + 1 + ALU out
-
-    */
     RiSC16_control #(
         .OP_LEN(3)
     ) control (

@@ -61,7 +61,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 module RiSC16_system #(
-    WORD_LENGTH = 16
+    parameter WORD_LENGTH = 16
 ) (
     clk, pen, instr, rst
 );
@@ -71,40 +71,48 @@ module RiSC16_system #(
     input rst;
 
     reg [WORD_LENGTH - 1 : 0] PC = 0;
-    reg [WORD_LENGTH - 1 : 0] IR = 0;
+    wire [WORD_LENGTH - 1 : 0] IR = 0;
     
-    reg i_rst = 0
+    reg i_rst = 0;
 
     reg [2:0] rf_addr2;
-    reg rf_wen;
+    wire rf_wen;
     reg [WORD_LENGTH - 1 : 0] rf_tgt;
 
-    reg [WORD_LENGTH - 1 : 0] rf_src1;
-    reg [WORD_LENGTH - 1 : 0] rf_src2;
+    wire [WORD_LENGTH - 1 : 0] rf_src1;
+    wire [WORD_LENGTH - 1 : 0] rf_src2;
 
-    reg [WORD_LENGTH - 1 : 0] d_out;
-    reg d_wen;
+    wire [WORD_LENGTH - 1 : 0] d_out;
+    wire d_wen;
 
     reg [WORD_LENGTH - 1 : 0] alu_1;
     reg [WORD_LENGTH - 1 : 0] alu_2;
-    reg alu_state;
-    reg [`ALU_FUNCT_LEN - 1 : 0] alu_funct;
-    reg [WORD_LENGTH - 1 : 0] alu_out;
+    wire alu_state;
+    wire [`ALU_FUNCT_LEN - 1 : 0] alu_funct;
+    wire [WORD_LENGTH - 1 : 0] alu_out;
 
-    reg muxSrc1;
-    reg muxSrc2;
-    reg [1:0] muxTrgt;
-    reg muxAddr2;
-    reg [1:0] muxPc;
+    wire muxSrc1;
+    wire muxSrc2;
+    wire [1:0] muxTrgt;
+    wire muxAddr2;
+    wire [1:0] muxPc;
 
     reg [WORD_LENGTH - 1 : 0] pc_inc;
 
     reg [WORD_LENGTH - 1 : 0] addIn;
 
+    wire [2:0] op;
+    wire [2:0] rf_addr1;
+    wire [2:0] rf_addrT;
+
+    assign op = IR[15:13];
+    assign rf_addr1 = IR[9:7];
+    assign rf_addrT = IR[12:10];
+
     RiSC16_control #(
         .OP_LEN(3)
-    ) (
-        .op(IR[15:13]), 
+    ) control (
+        .op(op), 
         .state(alu_state), 
         .pen(pen), 
         .aluFunct(alu_funct), 
@@ -134,22 +142,20 @@ module RiSC16_system #(
         .REG_ADDR_LEN(3),
         .REG_NUM(8)
     ) rf (
-        .addr1(IR[9:7]), 
+        .addr1(rf_addr1), 
         .src1(rf_src1), 
         .addr2(rf_addr2), 
         .src2(rf_src2), 
-        .addrT(IR[12:10]), 
+        .addrT(rf_addrT), 
         .trgt(rf_tgt),
         .wen(rf_wen), 
         .clk(clk), 
         .rst(rst)
     );
 
-    R
-
     RiSC16_alu #(
         .WORD_LENGTH(16)
-    ) (
+    ) alu (
         .src1(alu_1), 
         .src2(alu_2), 
         .result(alu_out), 
@@ -173,13 +179,16 @@ module RiSC16_system #(
         
         pc_inc = PC + 1;
 
-        if(rst and pen) begin
+        if(rst & pen) begin
             i_rst = 1;
             PC <= 0;
-        end else if(pen and ~rst) begin
+        end else if(pen & ~rst) begin
             i_rst = 0;
-        end else if(~pen) begin
-            
+            PC <= pc_inc;
+        end else if(~pen & rst) begin
+            PC <= 0;
+        end else if(~pen & ~rst) begin
+            i_rst = 0;
             if(muxAddr2)
                 rf_addr2 = IR[12:10];
             else
