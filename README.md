@@ -4,7 +4,7 @@ Implementation of the RiSC 16 ( Ridiculously Simple Computer) Instruction Set Ar
 # RISC16 Architecture
 ## Registers
 
-Accessible registers r0 to r7.
+Accessible 16 bit registers r0 to r7.
 
 r0 always has value 0, even after writing to it.
 
